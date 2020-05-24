@@ -90,11 +90,36 @@ function getDesiredQuantity(ingredient, defaultServings, desiredServings) {
 
         fractional = math.fraction(fractional);
 
-        let result = (<><sup>{fractional.n}</sup>/<sub>{fractional.d}</sub></>);
+        let result = getFracCode(fractional.n, fractional.d);
+        if (!result)
+            result = (<><sup>{fractional.n}</sup>/<sub>{fractional.d}</sub></>);
+
         if (nonfractional !== 0)
             result = (<>{nonfractional} {result}</>);
         return result;
     }
+}
+
+function getFracCode(n, d) {
+    const codes = {
+        '12': <span>&frac12;</span>,
+        '13': <span>&frac13;</span>,
+        '14': <span>&frac14;</span>,
+        '15': <span>&frac15;</span>,
+        '16': <span>&frac16;</span>,
+        '18': <span>&frac18;</span>,
+        '23': <span>&frac23;</span>,
+        '25': <span>&frac25;</span>,
+        '34': <span>&frac34;</span>,
+        '35': <span>&frac35;</span>,
+        '38': <span>&frac38;</span>,
+        '45': <span>&frac45;</span>,
+        '56': <span>&frac56;</span>,
+        '58': <span>&frac58;</span>,
+        '78': <span>&frac78;</span>
+    };
+    console.log(n + ' ' + d + ': ' + (String(n) + String(d)));
+    return codes[String(n) + String(d)];
 }
 
 function Ingredient(props) {
@@ -116,7 +141,7 @@ function Ingredient(props) {
 
 function Direction(props) {
     const direction = props.direction;
-    
+
     let timeAmount = extractTiming(direction);
     const timer = timeAmount > 0 ? <Timer minutes={timeAmount}/> : null;
 
